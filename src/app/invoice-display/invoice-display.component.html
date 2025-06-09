@@ -1,0 +1,77 @@
+<app-flash-video-popup  *ngIf="showPopup"  [flashVideoURL]="'/assets/Softcon.mp4'"  (popupClosed)="showPopup = false">Video poppup</app-flash-video-popup>
+<!-- <div class="invoice-page" > -->
+<div class="invoice-container" *ngIf="invoice">
+
+<!-- Header Images -->
+<div class="auto-scroll no-print"  #scrollContainer *ngIf="headerImageList?.length">
+<div class="carousel-wrapper no-print" *ngIf="headerImageList?.length">
+  <img [src]="headerImageList[currentHeaderIndex]" alt="Header Image" class="carousel-image" />
+</div>
+</div>
+
+<!-- rating -->
+<div class="for-download"  style="background-color:white; color:black;">
+  <div class="rating-container">
+  <p class="rating-label">Rate Us</p>
+
+  <div class="star-rating">  
+    <ng-container *ngFor="let star of [].constructor(maxStars); let i = index">
+      <span
+        class="star"
+        [class.filled]="i < userRating"
+        (click)="setRating(i + 1)"
+        (mouseover)="userRating = i + 1"
+        (mouseleave)="userRating = hoverRating">
+        &#9733;
+      </span>
+    </ng-container>
+  </div>
+
+  <!-- Show thank you message after rating -->
+  <p *ngIf="ratingSubmitted" class="thank-you-message">Thank you for sharing your reviews!</p>
+</div>
+
+</div>
+  <h2>TAX INVOICE</h2>
+    <!-- <iframe *ngIf="pdfBlobUrl" [attr.src]="pdfBlobUrl" #invoiceContent id="invoiceContent" width="100%" height="2000px" style="border: none; background-color: white;" class="pdf-frame" scrolling="no"></iframe> -->
+     <embed 
+  *ngIf="pdfBlobUrl"
+  [src]="pdfBlobUrl"
+  #invoiceContent id="invoiceContent"
+  type="application/pdf"
+  width="100%"
+  style="min-height: 500px; max-height: 90vh; background-color: white;" />
+
+    <div *ngIf="!pdfBlobUrl && !errorMessage">Loading PDF...</div>
+    <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+
+  <!-- Social Media Icons -->
+  <div class="social-icons">
+  <a *ngIf="socialLinks.facebook" [href]="socialLinks.facebook" target="_blank">
+    <fa-icon [icon]="faFacebook"></fa-icon>
+  </a>
+  <a *ngIf="socialLinks.instagram" [href]="socialLinks.instagram" target="_blank">
+    <fa-icon [icon]="faInstagram"></fa-icon>
+  </a>
+  <a *ngIf="socialLinks.twitter" [href]="socialLinks.twitter" target="_blank">
+    <fa-icon [icon]="faTwitter"></fa-icon>
+  </a>
+</div>
+ 
+  <!-- Footer Images -->
+<div class="auto-scroll no-print" #footerScrollContainer *ngIf="footerImageList?.length">
+  <div class="carousel-wrapper no-print" *ngIf="headerImageList?.length">
+  <img [src]="headerImageList[currentHeaderIndex]" alt="Header Image" class="carousel-image" />
+</div>
+</div>
+
+<!-- Pdf download -->
+<div class="pdf-section no-print">
+  <button (click)="downloadPDF()">Download Invoice PDF</button>
+</div>
+</div>
+
+<!-- Loading and Error -->
+<div *ngIf="loading" class="loading">Loading...</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
